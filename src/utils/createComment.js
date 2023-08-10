@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const url = import.meta.env.VITE_APP_MAIN_URL;
 
-const getComment = async (videoId, comment) => {
+const createComment = async (videoId, comment) => {
   try {
     const response = await axios.post(`${url}/comment/${videoId}`, comment);
 
@@ -12,4 +12,4 @@ const getComment = async (videoId, comment) => {
   }
 };
 
-export default getComment;
+export default createComment;

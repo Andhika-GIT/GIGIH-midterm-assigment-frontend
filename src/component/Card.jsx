@@ -89,58 +89,36 @@ const Card = ({ video, type, product }) => {
     content = (
       <Center py={12}>
         <Box
-          role={"group"}
-          p={6}
-          maxW={"330px"}
-          w={"full"}
           bg={useColorModeValue("white", "gray.800")}
-          boxShadow={"2xl"}
-          rounded={"lg"}
-          pos={"relative"}
-          zIndex={1}
+          maxW="sm"
+          borderWidth="1px"
+          rounded="lg"
+          shadow="xl"
+          position="relative"
         >
-          <Box
-            rounded={"lg"}
-            mt={-12}
-            pos={"relative"}
-            height={"230px"}
-            _after={{
-              transition: "all .3s ease",
-              content: '""',
-              w: "full",
-              h: "full",
-              pos: "absolute",
-              top: 5,
-              left: 0,
-              backgroundImage: `url(${IMAGE})`,
-              filter: "blur(15px)",
-              zIndex: -1,
-            }}
-            _groupHover={{
-              _after: {
-                filter: "blur(20px)",
-              },
-            }}
-          >
-            <Image
-              rounded={"lg"}
-              height={230}
-              width={282}
-              objectFit={"cover"}
-              src={product.imageURL}
-              alt="#"
-            />
-          </Box>
-          <Stack pt={10} align={"center"}>
-            <Heading fontSize={"lg"} fontFamily={"body"} fontWeight={500}>
-              {product.title}
-            </Heading>
-            <Stack direction={"row"} align={"center"}>
-              <Text fontWeight={200} fontSize={"md"}>
-                Rp.{product.price}
+          <Image
+            src={product.imageURL}
+            alt={`Picture of ${product.title}`}
+            roundedTop="lg"
+            h="full"
+          />
+
+          <Box p="6">
+            <Flex mt="1" justifyContent="space-between" alignItems="center">
+              <Box
+                fontSize="xl"
+                fontWeight="semibold"
+                as="h4"
+                lineHeight="tight"
+                isTruncated
+              >
+                {product.title}
+              </Box>
+              <Text fontSize="md" fontWeight={400}>
+                Rp. {product.price}
               </Text>
-            </Stack>
-          </Stack>
+            </Flex>
+          </Box>
         </Box>
       </Center>
     );

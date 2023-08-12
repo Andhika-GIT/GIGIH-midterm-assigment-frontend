@@ -46,7 +46,8 @@ const AddComment = ({ onAddComment, loading }) => {
       comment: comment,
     };
 
-    setUsername;
+    setUsername("");
+    setComment("");
 
     onAddComment(data);
   };

@@ -14,7 +14,7 @@ import {
 import { BsArrowUpRight, BsHeartFill, BsHeart } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-const Card = ({ video, type }) => {
+const Card = ({ video, type, product }) => {
   const [liked, setLiked] = useState(false);
 
   const IMAGE =
@@ -127,27 +127,17 @@ const Card = ({ video, type }) => {
               height={230}
               width={282}
               objectFit={"cover"}
-              src={IMAGE}
+              src={product.imageURL}
               alt="#"
             />
           </Box>
           <Stack pt={10} align={"center"}>
-            <Text
-              color={"gray.500"}
-              fontSize={"sm"}
-              textTransform={"uppercase"}
-            >
-              Brand
-            </Text>
-            <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-              Nice Chair, pink
+            <Heading fontSize={"lg"} fontFamily={"body"} fontWeight={500}>
+              {product.title}
             </Heading>
             <Stack direction={"row"} align={"center"}>
-              <Text fontWeight={800} fontSize={"xl"}>
-                $57
-              </Text>
-              <Text textDecoration={"line-through"} color={"gray.600"}>
-                $199
+              <Text fontWeight={200} fontSize={"md"}>
+                Rp.{product.price}
               </Text>
             </Stack>
           </Stack>

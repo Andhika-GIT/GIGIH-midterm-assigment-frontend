@@ -13,6 +13,8 @@ import {
   StackDivider,
   Text,
   AspectRatio,
+  VStack,
+  Flex,
 } from "@chakra-ui/react";
 
 import { useParams } from "react-router-dom";
@@ -32,11 +34,13 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // COMPONENTS
-import { AddComment, Card as ProductCard, Comment } from "../component";
+import { AddComment, Comment, ProductList, EmptyProduct } from "../component";
+
+import ReactPlayer from "react-player/youtube";
 
 const VideoDetail = () => {
   const [video, setVideo] = useState("");
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { videoId } = useParams();
@@ -51,6 +55,9 @@ const VideoDetail = () => {
   // get products based on videoId
   const fetchProductsData = async () => {
     const response = await getProduct(videoId);
+
+    console.log(response.data.data);
+    setProducts(response.data.data);
   };
 
   // get comments based on videoId
@@ -62,7 +69,7 @@ const VideoDetail = () => {
 
   useEffect(() => {
     fetchvideoData();
-    // fetchProductsData();
+    fetchProductsData();
     fetchCommentsData();
   }, []);
 
@@ -83,51 +90,22 @@ const VideoDetail = () => {
       <Center d="flex" flexDirection={"column"} gap={50}>
         <Card w={"full"}>
           <CardBody>
-            <AspectRatio w="full" ratio={1}>
-              <iframe
-                title={video.title}
-                src={video.videoURL}
-                allowFullScreen
-              />
-            </AspectRatio>
+            <ReactPlayer
+              url={video.videoURL}
+              width="full"
+              controls="true"
+              style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+            />
             <Stack mt="6" spacing="3" mb="3">
               <Heading size="md">{video.title}</Heading>
               <Text>{video.description}</Text>
             </Stack>
-            <Divider mb="20" />
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={2}
-              centeredSlides={true}
-              navigation={true}
-              modules={[Navigation]}
-              className="mySwiper"
-              breakpoints={{
-                1024: {
-                  slidesPerView: 3,
-                  spaceBetween: 5,
-                },
-              }}
-            >
-              <SwiperSlide>
-                <ProductCard type="product" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductCard type="product" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductCard type="product" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductCard type="product" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductCard type="product" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <ProductCard type="product" />
-              </SwiperSlide>
-            </Swiper>
+            <Divider mb="10" />
+            {products.length > 0 ? (
+              <ProductList products={products} />
+            ) : (
+              <EmptyProduct />
+            )}
           </CardBody>
         </Card>
         <AddComment onAddComment={submitComment} loading={isLoading} />

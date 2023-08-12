@@ -12,6 +12,7 @@ import {
   Stack,
   StackDivider,
   Text,
+  AspectRatio,
 } from "@chakra-ui/react";
 
 import { useParams } from "react-router-dom";
@@ -82,7 +83,13 @@ const VideoDetail = () => {
       <Center d="flex" flexDirection={"column"} gap={50}>
         <Card w={"full"}>
           <CardBody>
-            <Image src={video.imageURL} borderRadius="lg" w={"full"} />
+            <AspectRatio w="full" ratio={1}>
+              <iframe
+                title={video.title}
+                src={video.videoURL}
+                allowFullScreen
+              />
+            </AspectRatio>
             <Stack mt="6" spacing="3" mb="3">
               <Heading size="md">{video.title}</Heading>
               <Text>{video.description}</Text>

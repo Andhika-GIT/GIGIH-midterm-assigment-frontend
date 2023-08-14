@@ -1,3 +1,5 @@
+Link to the [app](https://tokopedia-play-hub.vercel.app/)
+
 ## **HOW TO RUN**
 
 - clone this repo into your file directory

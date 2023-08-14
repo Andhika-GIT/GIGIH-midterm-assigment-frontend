@@ -8,39 +8,27 @@ import {
   Center,
   Divider,
   Heading,
-  Image,
   Stack,
   StackDivider,
   Text,
-  AspectRatio,
-  VStack,
-  Flex,
 } from "@chakra-ui/react";
 
 import { useParams } from "react-router-dom";
 
 // utils
 import {
+  createComment,
   getComment,
   getProduct,
   getVideoDetail,
-  createComment,
 } from "../utils";
 
 // SWIPER
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // COMPONENTS
-import {
-  AddComment,
-  Comment,
-  ProductList,
-  EmptyProduct,
-  Loading,
-} from "../component";
+import { AddComment, Comment, Error, Loading, ProductList } from "../component";
 
 import ReactPlayer from "react-player/youtube";
 
@@ -50,38 +38,28 @@ const VideoDetail = () => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCommentLoading, setIsCommentLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const { videoId } = useParams();
 
-  // get single video data
-  const fetchvideoData = async () => {
-    const response = await getVideoDetail(videoId);
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const responseVideo = await getVideoDetail(videoId);
+      const responseProduct = await getProduct(videoId);
+      const responseComment = await getComment(videoId);
 
-    setVideo(response.data.data);
-  };
+      setVideo(responseVideo.data.data);
+      setProducts(responseProduct.data.data);
+      setComments(responseComment.data.data);
+    } catch (err) {
+      setIsError(true);
+    }
 
-  // get products based on videoId
-  const fetchProductsData = async () => {
-    const response = await getProduct(videoId);
-
-    console.log(response.data.data);
-    setProducts(response.data.data);
-  };
-
-  // get comments based on videoId
-  const fetchCommentsData = async () => {
-    const response = await getComment(videoId);
-
-    setComments(response.data.data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    setIsLoading(true);
-
-    fetchvideoData();
-    fetchProductsData();
-    fetchCommentsData();
-
-    setIsLoading(false);
+    fetchData();
   }, []);
 
   // when comment submit
@@ -96,7 +74,15 @@ const VideoDetail = () => {
     setIsCommentLoading(false);
   };
 
-  if (isLoading) return <Loading />;
+  if (isError) {
+    return (
+      <Error message="Something wrong, to go back to home page and try again" />
+    );
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Box mb={20}>
@@ -117,7 +103,7 @@ const VideoDetail = () => {
             {products.length > 0 ? (
               <ProductList products={products} />
             ) : (
-              <EmptyProduct />
+              <Error message="This shop has no product" />
             )}
           </CardBody>
         </Card>

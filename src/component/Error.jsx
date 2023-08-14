@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 
-const EmptyProduct = () => {
+const Error = ({ message = "something wrong" }) => {
   return (
     <Box textAlign="center" py={10} px={6}>
       <Box display="inline-block">
@@ -19,10 +19,10 @@ const EmptyProduct = () => {
         </Flex>
       </Box>
       <Heading as="h2" size="xl" mt={6} mb={2}>
-        This shop has no product
+        {message}
       </Heading>
     </Box>
   );
 };
 
-export default EmptyProduct;
+export default Error;

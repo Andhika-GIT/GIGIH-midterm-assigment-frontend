@@ -10,6 +10,7 @@ import {
   HStack,
   Stack,
   Image,
+  Circle,
 } from "@chakra-ui/react";
 import { BsArrowUpRight, BsHeartFill, BsHeart } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -34,7 +35,28 @@ const Card = ({ video, type, product }) => {
           border={"1px"}
           borderColor="black"
           boxShadow={useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan")}
+          position="relative"
         >
+          <Box
+            bg="white"
+            display={"flex"}
+            px={2}
+            py={1}
+            color="white"
+            mb={2}
+            gap={2}
+            alignItems="center"
+            justifyContent="center"
+            w="max-content"
+            position="absolute"
+            top={2}
+            right={2}
+          >
+            <Circle size="10px" bg="red.500" />
+            <Text fontSize={"xs"} fontWeight="medium" color="red.500">
+              Live
+            </Text>
+          </Box>
           <Box h={"200px"} borderBottom={"1px"} borderColor="black">
             <Img
               src={video.imageURL}
@@ -45,19 +67,8 @@ const Card = ({ video, type, product }) => {
               alt={"Blog Image"}
             />
           </Box>
+
           <Box p={4}>
-            <Box
-              bg="black"
-              display={"inline-block"}
-              px={2}
-              py={1}
-              color="white"
-              mb={2}
-            >
-              <Text fontSize={"xs"} fontWeight="medium">
-                Live
-              </Text>
-            </Box>
             <Heading color={"black"} fontSize={"2xl"} noOfLines={1}>
               {video.title}
             </Heading>

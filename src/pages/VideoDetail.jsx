@@ -34,7 +34,13 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // COMPONENTS
-import { AddComment, Comment, ProductList, EmptyProduct } from "../component";
+import {
+  AddComment,
+  Comment,
+  ProductList,
+  EmptyProduct,
+  Loading,
+} from "../component";
 
 import ReactPlayer from "react-player/youtube";
 
@@ -43,6 +49,7 @@ const VideoDetail = () => {
   const [products, setProducts] = useState([]);
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCommentLoading, setIsCommentLoading] = useState(false);
   const { videoId } = useParams();
 
   // get single video data
@@ -68,22 +75,28 @@ const VideoDetail = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
+
     fetchvideoData();
     fetchProductsData();
     fetchCommentsData();
+
+    setIsLoading(false);
   }, []);
 
   // when comment submit
   const submitComment = async (data) => {
-    setIsLoading(true);
+    setIsCommentLoading(true);
     const response = await createComment(videoId, data);
 
     if (response.status === 200) {
       await fetchCommentsData();
-      setIsLoading(false);
     }
-    console.log(response);
+
+    setIsCommentLoading(false);
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <Box mb={20}>
@@ -108,18 +121,22 @@ const VideoDetail = () => {
             )}
           </CardBody>
         </Card>
-        <AddComment onAddComment={submitComment} loading={isLoading} />
+        <AddComment onAddComment={submitComment} loading={isCommentLoading} />
 
         <Card w="full">
           <CardHeader>
             <Heading size="md">Comments</Heading>
           </CardHeader>
           <CardBody>
-            <Stack divider={<StackDivider />} spacing="4">
-              {comments.map((comment, index) => {
-                return <Comment key={comment._id} comment={comment} />;
-              })}
-            </Stack>
+            {isCommentLoading ? (
+              <Loading />
+            ) : (
+              <Stack divider={<StackDivider />} spacing="4">
+                {comments.map((comment) => {
+                  return <Comment key={comment._id} comment={comment} />;
+                })}
+              </Stack>
+            )}
           </CardBody>
         </Card>
       </Center>

@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { Search2Icon } from "@chakra-ui/icons";
 import {
-  Wrap,
-  WrapItem,
-  Heading,
-  Text,
-  Center,
   Input,
   InputGroup,
   InputLeftElement,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
-import { Search2Icon } from "@chakra-ui/icons";
 
 // utils
 import { getVideos } from "../utils";
-import { Card } from "../component";
+
+// components
+import { Card, Loading } from "../component";
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [search, setSearch] = useState("");
+  const [isloading, setIsLoading] = useState(false);
 
   const getData = async () => {
+    setIsLoading(true);
     const response = await getVideos();
-    console.log(response);
 
     setVideos(response.data.data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -35,6 +36,7 @@ const Home = () => {
     return video.title.toLowerCase().includes(search.toLowerCase());
   });
 
+  if (isloading) return <Loading />;
   return (
     <>
       <InputGroup>
